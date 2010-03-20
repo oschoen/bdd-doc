@@ -38,13 +38,13 @@ public class BddProcessor extends AbstractProcessor {
                 getStandardFileManager(null, null, null);
 
 
-        Iterable<? extends JavaFileObject> compilationUnits1 =
+        Iterable<? extends JavaFileObject> compilationUnits =
                 fileManager.getJavaFileObjectsFromFiles(files);
 
         // Create the compilation task
         StringWriter errors = new StringWriter();
         JavaCompiler.CompilationTask task = compiler.getTask(errors, fileManager, null,
-                null, null, compilationUnits1);
+                null, null, compilationUnits);
 
         // Create a list to hold annotation processors
         LinkedList<AbstractProcessor> processors = new LinkedList<AbstractProcessor>();

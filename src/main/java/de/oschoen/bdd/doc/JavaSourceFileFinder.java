@@ -29,7 +29,7 @@ public class JavaSourceFileFinder {
         for (File file : filesInDir) {
             if (file.isDirectory() && !file.getName().startsWith(".")) {
                 walk(file, javaSourceFiles);
-            } else if (file.getName().endsWith("Test.java")) {
+            } else if (file.getName().endsWith(".java")) {
                 javaSourceFiles.add(file);
             }
         }

@@ -67,14 +67,6 @@ public class JavaSourceFileFinderTest {
         assertThat(javaFiles, hasItem(testDirectory.getTestFile("directoryWithNonJavaSourceFiles/TestClassTest.java")));
     }
 
-    @Test
-    public void shouldOnlyFindJavaSourceFilesWithTestClasses() {
-        JavaSourceFileFinder fileFinder = new JavaSourceFileFinder(testDirectory.getTestFile("directoryWithNonTestJavaSourceFile"));
-
-        Collection<File> javaFiles = fileFinder.findJavaSourceFiles();
-
-        assertThat(javaFiles.size(), is(0));
-
-    }
+   
 
 }
