@@ -31,7 +31,7 @@ public class ClassHierarchyTest {
     public void shouldFindTestMethodsOnASimpleClass() {
         ClassHierarchy classHierarchy = new ClassHierarchy();
         JavaClass javaClass = new JavaClass(false, "TestClass", null);
-        javaClass.addTestMethod(new TestMethod("shouldBeAestMethod"));
+        javaClass.addTestMethod(new TestMethod("shouldBeAestMethod","ignore src"));
         classHierarchy.addClass(javaClass);
 
         assertEquals(1, classHierarchy.getTestMethodsForClass("TestClass").size());
@@ -43,7 +43,7 @@ public class ClassHierarchyTest {
     public void shouldFindTestMethodsOnAExtendedClassWithoutAccessToTheParentClass() {
         ClassHierarchy classHierarchy = new ClassHierarchy();
         JavaClass javaClass = new JavaClass(false, "TestClass", "BaseTestClassWhichSourceNotExists");
-        javaClass.addTestMethod(new TestMethod("shouldBeATestMethod"));
+        javaClass.addTestMethod(new TestMethod("shouldBeATestMethod", "ignore src"));
         classHierarchy.addClass(javaClass);
 
         assertEquals(1, classHierarchy.getTestMethodsForClass("TestClass").size());
@@ -55,13 +55,13 @@ public class ClassHierarchyTest {
     public void shouldFindOverridenTestMethods() {
         ClassHierarchy classHierarchy = new ClassHierarchy();
         JavaClass testClass = new JavaClass(false, "TestClass", "BaseTestClass");
-        TestMethod testClassTestMethod = new TestMethod("shouldBeATestMethod");
+        TestMethod testClassTestMethod = new TestMethod("shouldBeATestMethod", "ignore src");
         testClassTestMethod.addMethodInvocationStatement(new MethodInvocationStatement("testStatement"));
         testClass.addTestMethod(testClassTestMethod);
         classHierarchy.addClass(testClass);
 
         JavaClass baseTestClass = new JavaClass(false, "BaseTestClass", null);
-        TestMethod baseTestClassTestMethod = new TestMethod("shouldBeATestMethod");
+        TestMethod baseTestClassTestMethod = new TestMethod("shouldBeATestMethod", "ignore src");
         testClassTestMethod.addMethodInvocationStatement(new MethodInvocationStatement("testBaseStatement"));
 
         baseTestClass.addTestMethod(baseTestClassTestMethod);
@@ -76,11 +76,11 @@ public class ClassHierarchyTest {
     public void shouldFindTestMethodsAlsoFromAExtendedClass() {
         ClassHierarchy classHierarchy = new ClassHierarchy();
         JavaClass testClass = new JavaClass(false, "TestClass", "BaseTestClass");
-        testClass.addTestMethod(new TestMethod("shouldBeATestMethod1"));
+        testClass.addTestMethod(new TestMethod("shouldBeATestMethod1", "ignore src"));
         classHierarchy.addClass(testClass);
 
         JavaClass baseTestClass = new JavaClass(false, "BaseTestClass", null);
-        baseTestClass.addTestMethod(new TestMethod("shouldBeATestMethod2"));
+        baseTestClass.addTestMethod(new TestMethod("shouldBeATestMethod2", "ignore src"));
         classHierarchy.addClass(baseTestClass);
 
         assertEquals(2, classHierarchy.getTestMethodsForClass("TestClass").size());
@@ -93,8 +93,8 @@ public class ClassHierarchyTest {
     public void shouldFindTestMethodsWithTheOrderOfOccurrence() {
         ClassHierarchy classHierarchy = new ClassHierarchy();
         JavaClass testClass = new JavaClass(false, "TestClass", "BaseTestClass");
-        testClass.addTestMethod(new TestMethod("shouldBeATestMethod1"));
-        testClass.addTestMethod(new TestMethod("shouldBeATestMethod2"));
+        testClass.addTestMethod(new TestMethod("shouldBeATestMethod1", "ignore src"));
+        testClass.addTestMethod(new TestMethod("shouldBeATestMethod2", "ignore src"));
 
         classHierarchy.addClass(testClass);
         List<TestMethod> testMethods = classHierarchy.getTestMethodsForClass("TestClass");

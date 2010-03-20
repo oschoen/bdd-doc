@@ -1,18 +1,22 @@
 package de.oschoen.bdd.doc;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestMethod {
 
     private final String name;
+    private final String source;
     private final List<MethodInvocationStatement> methodInvocationStatements = new ArrayList<MethodInvocationStatement>();
 
-    public TestMethod(String name) {
+    public TestMethod(String name, String source) {
         if (!name.startsWith("should")) {
             throw new IllegalStateException("The test method needs to be starts with [should] but [" + name + "] don't do this.");
         }
         this.name = name;
+        this.source = source;
     }
 
     public String getName() {
@@ -35,29 +39,15 @@ public class TestMethod {
 
         for (MethodInvocationStatement statement : methodInvocationStatements) {
             if (statement.getMethodSelect().startsWith("given")) {
-                givens.add(transformFromCamelCaseToNaturalLanguage("given", statement.getMethodSelect()));
+               givens.add(transformFromMethodInvocationStatementToNaturalLanguage("given", statement));
             }
 
             if (statement.getMethodSelect().startsWith("when")) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(transformFromCamelCaseToNaturalLanguage("when", statement.getMethodSelect()));
-
-                String[] args = statement.getArgs();
-                for (String arg : args) {
-                    sb.append(" " + arg);
-                }
-                whens.add(sb.toString());
+                whens.add(transformFromMethodInvocationStatementToNaturalLanguage("when", statement));
             }
 
-            if (statement.getMethodSelect().startsWith("then")) {
-                StringBuilder sb = new StringBuilder();
-                sb.append(transformFromCamelCaseToNaturalLanguage("then", statement.getMethodSelect()));
-
-                String[] args = statement.getArgs();
-                for (String arg : args) {
-                    sb.append(" " + arg);
-                }
-                thens.add(sb.toString());
+            if (statement.getMethodSelect().startsWith("then")) { 
+                thens.add(transformFromMethodInvocationStatementToNaturalLanguage("then", statement));
             }
         }
 
@@ -69,14 +59,28 @@ public class TestMethod {
             throw new IllegalStateException("Test method with name [" + name + "] has no then statement. The method contains following statements [" + methodInvocationStatements + "].");
         }
 
-        return new Scenario(scenarioName, givens, whens, thens);
+        return new Scenario(scenarioName, givens, whens, thens, source);
     }
 
-    private static String transformFromCamelCaseToNaturalLanguage(String prefixToIgnore, String camelCase) {
+    private String transformFromMethodInvocationStatementToNaturalLanguage(String prefixToIgnore, MethodInvocationStatement statement) {
 
+        StringBuilder nlOut = new StringBuilder();
+        String methodSelect = statement.getMethodSelect();
+
+        nlOut.append(transformFromCamelCaseToNaturalLanguage(prefixToIgnore, methodSelect));
+
+        if (statement.getArgs().length > 0) {
+            nlOut.append(" " + StringUtils.join(statement.getArgs(), " "));
+        }
+
+        return nlOut.toString();
+
+    }
+
+    private String transformFromCamelCaseToNaturalLanguage(String prefixToIgnore, String camelCase) {
         return camelCase.substring(prefixToIgnore.length()).replaceAll("([A-Z])", " $1").toLowerCase().substring(1);
-
     }
+
 
     @Override
     public boolean equals(Object o) {

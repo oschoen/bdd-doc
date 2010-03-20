@@ -11,7 +11,7 @@ public class TestObjectTest {
         ClassHierarchy classHierarchy = new ClassHierarchy();
 
         JavaClass abstractJavaClass = new JavaClass(true, "AbstractClass", "");
-        abstractJavaClass.addTestMethod(new TestMethod("shouldNotUsed"));
+        abstractJavaClass.addTestMethod(new TestMethod("shouldNotUsed","ignore src"));
 
         classHierarchy.addClass(abstractJavaClass);
 
@@ -35,7 +35,7 @@ public class TestObjectTest {
         ClassHierarchy classHierarchy = new ClassHierarchy();
 
         JavaClass javaClass = new JavaClass(false, "TestClass", "");
-         TestMethod testMethod = new TestMethod("shouldUse");
+         TestMethod testMethod = new TestMethod("shouldUse", "ignore src");
          testMethod.addMethodInvocationStatement(new MethodInvocationStatement("givenSomething"));
          testMethod.addMethodInvocationStatement(new MethodInvocationStatement("thenEnsureSomething"));         
          javaClass.addTestMethod(testMethod);

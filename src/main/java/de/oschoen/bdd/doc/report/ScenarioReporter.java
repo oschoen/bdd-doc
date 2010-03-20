@@ -21,6 +21,7 @@ public class ScenarioReporter {
 
         out.append("<p><strong>Then </strong> " + StringUtils.join(scenario.getThens(), " <br> and ") + "</p>");
 
+        out.append("<pre>" + escapeHtml(scenario.getOrigJavaSource()) + "</pre>");
         return out.toString();
     }
 }

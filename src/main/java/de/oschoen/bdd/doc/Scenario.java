@@ -7,11 +7,12 @@ import java.util.List;
 public class Scenario {
 
     private final String name;
+    private final String origJavaSource;
     private final List<String> givens;
     private final List<String> whens;
     private final List<String> thens;
 
-    public Scenario(String name, List<String> givens, List<String> whens, List<String> thens) {
+    public Scenario(String name, List<String> givens, List<String> whens, List<String> thens, String origJavaSource) {
         this.name = name;
         this.givens = givens;
 
@@ -22,6 +23,7 @@ public class Scenario {
         }
         
         this.thens = thens;
+        this.origJavaSource = origJavaSource; 
     }
 
 
@@ -41,6 +43,10 @@ public class Scenario {
         return thens;
     }
 
+    public String getOrigJavaSource() {
+        return origJavaSource;
+    }
+    
     @Override
     public String toString() {
         return "Scenario{" +

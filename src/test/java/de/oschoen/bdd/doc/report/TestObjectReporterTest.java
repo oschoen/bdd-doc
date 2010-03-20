@@ -9,8 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.matchers.JUnitMatchers.hasItem;
 
 public class TestObjectReporterTest {
 
@@ -48,7 +46,7 @@ public class TestObjectReporterTest {
             }
         });
         TestObject testObject = new TestObject("Test Object Name");
-        testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null));
+        testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null, "ignore src"));
         assertThat(testObjectReport.getReport(testObject), containsString(("Scenario Example Report")));
 
     }
@@ -67,8 +65,8 @@ public class TestObjectReporterTest {
         });
 
         TestObject testObject = new TestObject("Test Object Name");
-        testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null));
-        testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null));
+        testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null, "ignore src"));
+        testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null, "ignore src"));
 
         String report = testObjectReport.getReport(testObject);
 

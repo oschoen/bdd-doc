@@ -102,7 +102,7 @@ public class BddProcessor extends AbstractProcessor {
                             if (annotation.getAnnotationType().toString().equals(Test.class.getSimpleName())) {
 
                                 if (node.getParameters().size() == 0) {
-                                    currentTestMethod = new TestMethod(node.getName().toString());
+                                    currentTestMethod = new TestMethod(node.getName().toString(), node.getBody().toString());
                                     currentClass.addTestMethod(currentTestMethod);
                                     return super.visitMethod(node, aVoid);
                                 }
