@@ -55,7 +55,7 @@ public class BddProcessor extends AbstractProcessor {
 
         // Perform the compilation task.
         if (!task.call()) {
-            System.err.println("Compilation errors: " + errors.toString());
+            //System.err.println("Compilation errors: " + errors.toString());
         }
 
         return classHierarchy;
@@ -81,6 +81,7 @@ public class BddProcessor extends AbstractProcessor {
                     //Get the type element corresponding to the class
                     TypeElement e = (TypeElement) trees.getElement(path);
 
+                    if (e != null) {
                     boolean isAbstract = node.getModifiers().getFlags().contains(Modifier.ABSTRACT);
                     String name = e.getQualifiedName().toString();
                     String extendsFrom = null;
@@ -90,6 +91,9 @@ public class BddProcessor extends AbstractProcessor {
                     currentClass = new JavaClass(isAbstract, name, extendsFrom);
                     classHierarchy.addClass(currentClass);
                     return super.visitClass(node, aVoid);
+                    } else {
+                        return aVoid;
+                    }
                 }
 
 

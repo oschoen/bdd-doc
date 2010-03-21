@@ -19,8 +19,8 @@ public class BddProcessorTest {
 
         ClassHierarchy classHierarchy = bddProcessor.parseFiles(testDirectory.getTestFiles("ExampleTestClazz.java", "BaseExampleTestClazz.java"));
 
-        assertEquals("de.oschoen.bdd.doc.BaseExampleTestClazz", classHierarchy.getClass("de.oschoen.bdd.doc.BaseExampleTestClazz").getName());
-        assertEquals("de.oschoen.bdd.doc.ExampleTestClazz", classHierarchy.getClass("de.oschoen.bdd.doc.ExampleTestClazz").getName());
+        assertEquals("testClasses.BaseExampleTestClazz", classHierarchy.getClass("testClasses.BaseExampleTestClazz").getName());
+        assertEquals("testClasses.ExampleTestClazz", classHierarchy.getClass("testClasses.ExampleTestClazz").getName());
 
 
     }
@@ -30,7 +30,7 @@ public class BddProcessorTest {
 
         ClassHierarchy classHierarchy = bddProcessor.parseFiles(testDirectory.getTestFiles("ExampleTestClazz.java", "BaseExampleTestClazz.java"));
 
-        Collection<TestMethod> testMethods = classHierarchy.getClass("de.oschoen.bdd.doc.ExampleTestClazz").getTestMethods();
+        Collection<TestMethod> testMethods = classHierarchy.getClass("testClasses.ExampleTestClazz").getTestMethods();
 
         assertEquals(1, testMethods.size());
 
@@ -43,7 +43,7 @@ public class BddProcessorTest {
 
         ClassHierarchy classHierarchy = bddProcessor.parseFiles(testDirectory.getTestFiles("ExampleTestClazz.java", "BaseExampleTestClazz.java"));
 
-        Collection<TestMethod> testMethods = classHierarchy.getClass("de.oschoen.bdd.doc.ExampleTestClazz").getTestMethods();
+        Collection<TestMethod> testMethods = classHierarchy.getClass("testClasses.ExampleTestClazz").getTestMethods();
 
         assertEquals(1, testMethods.size());
 
@@ -51,11 +51,23 @@ public class BddProcessorTest {
 
     }
 
-    public void shouldThrowExceptionBecauseTestMethodsWithParametersAreNotSupported() {
+    @Test
+    public void shouldIgnoreTestMethodsWithParameters() {
         ClassHierarchy classHierarchy = bddProcessor.parseFiles(testDirectory.getTestFiles("ExampleTestClazzWithMethodParam.java"));
-        Collection<TestMethod> testMethods = classHierarchy.getClass("de.oschoen.bdd.doc.ExampleTestClazz").getTestMethods();
+        Collection<TestMethod> testMethods = classHierarchy.getClass("testClasses.ExampleTestClazzWithMethodParam").getTestMethods();
 
-        assertEquals(0, testMethods.size());
+        assertEquals(1, testMethods.size());
+        thenEnsureTestMethodWithName(testMethods, "shouldWork");
+
+    }
+
+     @Test
+    public void shouldIgnoreAnonymousClasses() {
+        ClassHierarchy classHierarchy = bddProcessor.parseFiles(testDirectory.getTestFiles("ExampleTestClazzWithAnonymousClass.java"));
+        Collection<TestMethod> testMethods = classHierarchy.getClass("testClasses.ExampleTestClazzWithAnonymousClass").getTestMethods();
+
+        assertEquals(1, testMethods.size());
+        thenEnsureTestMethodWithName(testMethods, "shouldWork");
 
     }
 

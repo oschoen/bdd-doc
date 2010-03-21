@@ -1,4 +1,4 @@
-package de.oschoen.bdd.doc;
+package testClasses;
 
 import org.junit.Test;
 
