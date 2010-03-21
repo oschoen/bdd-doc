@@ -1,0 +1,24 @@
+This tool can convert your java acceptance tests source code in a readable documentation. 
+
+Usage:
+
+Write your junit 4 tests with the following syntax:
+
+@Test
+public void shouldReturnedToStock() {
+    givenACustomerBuysABlackJumper();
+    whenHeReturnsTheJumperForARefund();
+    thenIShouldHaveFourBlackJumpersInStock();
+}
+
+Then convert this source code to a HTML documentation:
+
+java -jar bdd-doc-1.0-SNAPSHOT-all-dep.jar path/to/your/test/src html/doc/output/directory
+
+Example output:
+
+returned to stock
+
+Given a customer buys a black jumper
+when he returns the jumper for a refund
+then I should have four black jumpers in stock

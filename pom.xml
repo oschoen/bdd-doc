@@ -52,6 +52,8 @@
                                     <mainClass>de.oschoen.bdd.doc.Main</mainClass>
                                 </transformer>
                             </transformers>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>all-dep</shadedClassifierName>
                         </configuration>
                     </execution>
                 </executions>
