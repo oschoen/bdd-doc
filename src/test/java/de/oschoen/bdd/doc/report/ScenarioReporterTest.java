@@ -122,4 +122,13 @@ public class ScenarioReporterTest {
         assertThat(scenarioReporter.getReport(scenario), containsString("the original java source code."));
         
     }
+
+    @Test
+    public void shouldWriteErrorMsgIfScenarioIsIncorrect() {
+        ScenarioReporter scenarioReporter = new ScenarioReporter();
+        Scenario incorrectScenario = Scenario.createIncorrectScenario("name", "errorMsg", "ignore src");
+
+        assertThat(scenarioReporter.getReport(incorrectScenario), containsString("errorMsg"));
+
+    }
 }

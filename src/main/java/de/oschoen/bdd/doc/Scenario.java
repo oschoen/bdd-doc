@@ -1,6 +1,9 @@
 package de.oschoen.bdd.doc;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -11,8 +14,19 @@ public class Scenario {
     private final List<String> givens;
     private final List<String> whens;
     private final List<String> thens;
+    private final String errorMsg; 
 
     public Scenario(String name, List<String> givens, List<String> whens, List<String> thens, String origJavaSource) {
+        this(name, "", givens, whens, thens, origJavaSource);
+
+    }
+
+    public static Scenario createIncorrectScenario(String name, String errorMsg, String origJavaSource) {
+        return new Scenario(name, errorMsg, Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), origJavaSource);    
+    }
+
+    private Scenario(String name, String errorMsg, List<String> givens, List<String> whens, List<String> thens, String origJavaSource) {
+        this.errorMsg = errorMsg;
         this.name = name;
         this.givens = givens;
 
@@ -21,11 +35,11 @@ public class Scenario {
         } else {
             this.whens = new ArrayList<String>();
         }
-        
-        this.thens = thens;
-        this.origJavaSource = origJavaSource; 
-    }
 
+        this.thens = thens;
+        this.origJavaSource = origJavaSource;
+
+    }
 
     public String getName() {
         return name;
@@ -45,6 +59,14 @@ public class Scenario {
 
     public String getOrigJavaSource() {
         return origJavaSource;
+    }
+
+    public boolean isIncorrect() {
+        return !StringUtils.isEmpty(errorMsg);
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
     }
     
     @Override

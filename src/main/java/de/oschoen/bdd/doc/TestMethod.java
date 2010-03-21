@@ -52,11 +52,11 @@ public class TestMethod {
         }
 
         if (givens.size() == 0) {
-            throw new IllegalStateException("Test method with name [" + name + "] has no given statement. The method contains following statements [" + methodInvocationStatements + "].");
+            return Scenario.createIncorrectScenario(name, "Test method with name [" + name + "] has no given statement. The method contains following statements [" + methodInvocationStatements + "].", source);
         }
 
         if (thens.size() == 0) {
-            throw new IllegalStateException("Test method with name [" + name + "] has no then statement. The method contains following statements [" + methodInvocationStatements + "].");
+            return Scenario.createIncorrectScenario(name, "Test method with name [" + name + "] has no then statement. The method contains following statements [" + methodInvocationStatements + "].", source);
         }
 
         return new Scenario(scenarioName, givens, whens, thens, source);

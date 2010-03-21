@@ -3,6 +3,7 @@ package de.oschoen.bdd.doc;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ScenarioTest {
 
@@ -32,6 +33,17 @@ public class ScenarioTest {
         assertEquals("some thing", scenario.getGivens().get(0));
     }
 
+     @Test
+    public void shouldReportCorrectScenarioIfNoErrorExists() {
+        TestMethod testMethod = new TestMethod("shouldWorks", "ignore src");
+        testMethod.addMethodInvocationStatement(new MethodInvocationStatement("givenSomeThing"));
+        testMethod.addMethodInvocationStatement(new MethodInvocationStatement("thenTheAnswerIsRed"));
+
+        Scenario scenario = testMethod.getScenario();
+
+        assertFalse(scenario.isIncorrect());
+    }
+
     @Test
     public void shouldFindGivensWithParamsFromTestMethod() {
         TestMethod testMethod = new TestMethod("shouldWorks", "ignore src");
@@ -44,11 +56,13 @@ public class ScenarioTest {
         assertEquals("some thing param1 param2", scenario.getGivens().get(0));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldThrowExceptionIfNoGivenStatementsExistisInTestMethod() {
+    @Test
+    public void shouldCreateScenarioWithErrorMsgIfNoGivenStatementsExistisInTestMethod() {
         TestMethod testMethod = new TestMethod("shouldWorks", "ignore src");
         testMethod.addMethodInvocationStatement(new MethodInvocationStatement("thenDoSomeThing"));
         Scenario scenario = testMethod.getScenario();
+
+        assertTrue(scenario.isIncorrect());
     }
 
     @Test
@@ -97,12 +111,15 @@ public class ScenarioTest {
         assertEquals("the answer is red", scenario.getThens().get(0));
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void shouldThrowExceptionIfNoThenStatementsExistisInTestMethod() {
+    @Test
+    public void shouldCreateScenarioWithErrorMsgIfNoThenStatementsExistisInTestMethod() {
         TestMethod testMethod = new TestMethod("shouldWorks", "ignore src");
         testMethod.addMethodInvocationStatement(new MethodInvocationStatement("givenSomeThing"));
         testMethod.addMethodInvocationStatement(new MethodInvocationStatement("whenDoSomeThing"));
         Scenario scenario = testMethod.getScenario();
+
+        assertTrue(scenario.isIncorrect());
+
     }
 
     @Test
@@ -113,6 +130,20 @@ public class ScenarioTest {
 
         Scenario scenario = testMethod.getScenario();
         assertEquals("the original java source code.", scenario.getOrigJavaSource());
+    }
+
+    @Test
+    public void shouldCreateIncorrectScenarioIfErrorMsgAdded() {
+        Scenario scenario = Scenario.createIncorrectScenario("name", "errorMsg", "ignore src");
+
+        assertTrue(scenario.isIncorrect());
+    }
+
+    @Test
+    public void shouldProvideErrorMsgIfScenarioIsIncorrect() {
+        Scenario scenario = Scenario.createIncorrectScenario("name", "errorMsg", "ignore src");
+
+        assertEquals("errorMsg", scenario.getErrorMsg());
     }
 
 }
