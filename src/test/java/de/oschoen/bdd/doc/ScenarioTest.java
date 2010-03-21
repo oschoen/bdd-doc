@@ -2,7 +2,12 @@ package de.oschoen.bdd.doc;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
+
 import static org.junit.Assert.*;
 
 public class ScenarioTest {
@@ -33,7 +38,7 @@ public class ScenarioTest {
         assertEquals("some thing", scenario.getGivens().get(0));
     }
 
-     @Test
+    @Test
     public void shouldReportCorrectScenarioIfNoErrorExists() {
         TestMethod testMethod = new TestMethod("shouldWorks", "ignore src");
         testMethod.addMethodInvocationStatement(new MethodInvocationStatement("givenSomeThing"));
@@ -144,6 +149,41 @@ public class ScenarioTest {
         Scenario scenario = Scenario.createIncorrectScenario("name", "errorMsg", "ignore src");
 
         assertEquals("errorMsg", scenario.getErrorMsg());
+    }
+
+    @Test
+    public void shouldLogWarningIfIncorrectScenarioFound() {
+
+        Logger logger = Logger.getLogger(Scenario.class.getName());
+
+        final AtomicInteger numberOfWarnings = new AtomicInteger();
+
+        Handler handler = new Handler() {
+
+            @Override
+            public void publish(LogRecord record) {
+                if (record.getLevel() == Level.WARNING) {
+                    numberOfWarnings.incrementAndGet();
+                }
+            }
+
+            @Override
+            public void flush() {
+            }
+
+            @Override
+            public void close() throws SecurityException {
+            }
+        };
+
+        logger.setUseParentHandlers(false);
+        logger.addHandler(handler);
+        logger.setLevel(Level.ALL);
+
+        Scenario scenario = Scenario.createIncorrectScenario("name", "errorMsg", "ignore src");
+
+        assertEquals(1, numberOfWarnings.intValue());
+
     }
 
 }

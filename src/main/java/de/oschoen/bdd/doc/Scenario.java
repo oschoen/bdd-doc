@@ -5,9 +5,12 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class Scenario {
+
+    private static Logger logger = Logger.getLogger(Scenario.class.getName());
 
     private final String name;
     private final String origJavaSource;
@@ -22,6 +25,7 @@ public class Scenario {
     }
 
     public static Scenario createIncorrectScenario(String name, String errorMsg, String origJavaSource) {
+        logger.warning(errorMsg);
         return new Scenario(name, errorMsg, Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), origJavaSource);    
     }
 
