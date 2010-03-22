@@ -5,20 +5,23 @@ Usage:
 Write your Junit 4 tests with the following syntax:
 
 @Test
-public void shouldReturnedToStock() {
-    givenACustomerBuysABlackJumper();
-    whenHeReturnsTheJumperForARefund();
-    thenIShouldHaveFourBlackJumpersInStock();
+public void shouldShowsOneRegistrationAs1%() {
+    givenAGoalOf200Registrations();
+
+    when1AttendeeRegisters();
+
+    thenEnsureTheGoalShouldBe1%Achieved();
+
 }
 
-Then compile this source code with the annotation processor an you get a readable HTML documentation:
+Then compile this source code with the annotation processor and you get a readable HTML documentation:
 
 javac -jar bdd-doc-1.0-SNAPSHOT-all-dep.jar -Areportoutdir=html/doc/output/directory YourTestClass.java
 
 Example output:
 
-returned to stock
+Shows one registration as 1%
 
-Given a customer buys a black jumper
-when he returns the jumper for a refund
-then i should have four black jumpers in stock
+Given a goal of 200 registrations
+When 1 attendee registers
+Then the goal should be 1% achieved
