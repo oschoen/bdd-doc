@@ -1,8 +1,8 @@
-This tool can convert your java acceptance tests source code in a readable documentation. 
+This Java 6 Annotation Processor can convert your Java acceptance tests source code in a readable documentation. 
 
 Usage:
 
-Write your junit 4 tests with the following syntax:
+Write your Junit 4 tests with the following syntax:
 
 @Test
 public void shouldReturnedToStock() {
@@ -11,9 +11,9 @@ public void shouldReturnedToStock() {
     thenIShouldHaveFourBlackJumpersInStock();
 }
 
-Then convert this source code to a HTML documentation:
+Then compile this source code with the annotation processor an you get a readable HTML documentation:
 
-java -jar bdd-doc-1.0-SNAPSHOT-all-dep.jar path/to/your/test/src html/doc/output/directory
+javac -jar bdd-doc-1.0-SNAPSHOT-all-dep.jar -Areportoutdir=html/doc/output/directory YourTestClass.java
 
 Example output:
 
@@ -21,4 +21,4 @@ returned to stock
 
 Given a customer buys a black jumper
 when he returns the jumper for a refund
-then I should have four black jumpers in stock
+then i should have four black jumpers in stock

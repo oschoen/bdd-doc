@@ -180,7 +180,7 @@ public class ScenarioTest {
         logger.addHandler(handler);
         logger.setLevel(Level.ALL);
 
-        Scenario scenario = Scenario.createIncorrectScenario("name", "errorMsg", "ignore src");
+        Scenario.createIncorrectScenario("name", "errorMsg", "ignore src");
 
         assertEquals(1, numberOfWarnings.intValue());
 
