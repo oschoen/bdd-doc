@@ -6,15 +6,27 @@ import java.util.List;
 
 public class TestObject {
 
-    private final String name;
+
+    private final String simpleName;
+    private final String packageName;
+
     private final List<Scenario> scenarios = new ArrayList<Scenario>();
 
-    public TestObject(String name) {
-        this.name = name;
+    public TestObject(String packageName, String simpleName) {
+        this.packageName = packageName;
+        this.simpleName = simpleName;
+    }
+
+    public String getSimpleName() {
+        return simpleName;
+    }
+
+    public String getPackageName() {
+        return packageName;
     }
 
     public String getName() {
-        return name;
+        return packageName + "." + simpleName;
     }
 
     public List<Scenario> getScenarios() {
@@ -28,7 +40,7 @@ public class TestObject {
     @Override
     public String toString() {
         return "TestObject{" +
-                "name='" + name + '\'' +
+                "name='" + getName() + '\'' +
                 ", scenarios=" + scenarios +
                 '}';
     }
@@ -42,13 +54,13 @@ public class TestObject {
             List<TestMethod> testMethods = classHierarchy.getTestMethodsForClass(clazz.getName());
 
             if (testMethods.size() > 0) {
-                TestObject testObject = new TestObject(clazz.getName());
+                TestObject testObject = new TestObject(clazz.getPackageName(), clazz.getSimpleName());
                 for (TestMethod testMethod : testMethods) {
                     testObject.addScenario(testMethod.getScenario());
                 }
                 testObjects.add(testObject);
             }
         }
-       return testObjects;
+        return testObjects;
     }
 }

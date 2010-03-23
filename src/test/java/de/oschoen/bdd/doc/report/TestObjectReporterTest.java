@@ -16,7 +16,7 @@ public class TestObjectReporterTest {
     public void shouldHasTestObjectNameInHtmlTitle() {
         TestObjectReporter testObjectReport = new TestObjectReporter(new ScenarioReporter());
 
-        assertThat(testObjectReport.getReport(new TestObject("Test Object Name")), containsString(("<title>Test Object Name</title>")));
+        assertThat(testObjectReport.getReport(new TestObject("pkg","Test Object Name")), containsString(("<title>pkg.Test Object Name</title>")));
 
     }
 
@@ -24,7 +24,7 @@ public class TestObjectReporterTest {
     @Test
     public void shouldHasTestObjectNameInHtmlH1Tag() {
         TestObjectReporter testObjectReport = new TestObjectReporter(new ScenarioReporter());
-        assertThat(testObjectReport.getReport(new TestObject("Test Object Name")), containsString(("<h1>Test Object Name</h1>")));
+        assertThat(testObjectReport.getReport(new TestObject("pkg","Test Object Name")), containsString(("<h1>pkg.Test Object Name</h1>")));
 
 
     }
@@ -33,8 +33,8 @@ public class TestObjectReporterTest {
     public void shouldEscapeHtml() {
         TestObjectReporter testObjectReport = new TestObjectReporter(new ScenarioReporter());
 
-        assertThat(testObjectReport.getReport(new TestObject("Test Object <Name>")), containsString(("<title>Test Object &lt;Name&gt;</title>")));
-        assertThat(testObjectReport.getReport(new TestObject("Test Object <Name>")), containsString(("<h1>Test Object &lt;Name&gt;</h1>")));
+        assertThat(testObjectReport.getReport(new TestObject("pkg","Test Object <Name>")), containsString(("<title>pkg.Test Object &lt;Name&gt;</title>")));
+        assertThat(testObjectReport.getReport(new TestObject("pkg","Test Object <Name>")), containsString(("<h1>pkg.Test Object &lt;Name&gt;</h1>")));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class TestObjectReporterTest {
                 return "Scenario Example Report";
             }
         });
-        TestObject testObject = new TestObject("Test Object Name");
+        TestObject testObject = new TestObject("pkg","Test Object Name");
         testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null, "ignore src"));
         assertThat(testObjectReport.getReport(testObject), containsString(("Scenario Example Report")));
 
@@ -64,7 +64,7 @@ public class TestObjectReporterTest {
             }
         });
 
-        TestObject testObject = new TestObject("Test Object Name");
+        TestObject testObject = new TestObject("pkg","Test Object Name");
         testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null, "ignore src"));
         testObject.addScenario(new Scenario("Scenario name", new ArrayList<String>(), null, null, "ignore src"));
 

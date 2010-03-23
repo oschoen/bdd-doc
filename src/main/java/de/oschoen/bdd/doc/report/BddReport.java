@@ -2,30 +2,34 @@ package de.oschoen.bdd.doc.report;
 
 import de.oschoen.bdd.doc.TestObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.annotation.processing.Filer;
+import javax.lang.model.element.Element;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
+import java.io.*;
 import java.util.Collection;
 
 public class BddReport {
 
-    private final File rootDirectory;
+    private final Filer filer;
     private final TestObjectReporter testObjectReporter;
 
-    public BddReport(File rootDirectory, TestObjectReporter testObjectReporter) {
-        assert rootDirectory.isDirectory();
-        this.rootDirectory = rootDirectory;
+    public BddReport(Filer filer, TestObjectReporter testObjectReporter) {
+        this.filer = filer;
         this.testObjectReporter = testObjectReporter;        
     }
     
     public void writeReports(Collection<TestObject> testObjects) {
         for (TestObject testObject : testObjects) {
             try {
-                FileWriter writer = new FileWriter(new File(rootDirectory, testObject.getName() + ".html"));
-                writer.append(testObjectReporter.getReport(testObject));
-                writer.close();
+                FileObject file = filer.createResource(StandardLocation.SOURCE_OUTPUT, testObject.getPackageName(), testObject.getSimpleName() + ".html", (Element) null);
+
+                OutputStream os = file.openOutputStream();
+                PrintWriter pw = new PrintWriter( os );
+                pw.append(testObjectReporter.getReport(testObject));
+                pw.close();
             } catch (IOException e) {
-                throw new RuntimeException("Cant generate report for test object [" + testObject + "].");
+                throw new RuntimeException("Cant generate report for test object [" + testObject + "].", e);
             }
 
         }

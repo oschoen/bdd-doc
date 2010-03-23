@@ -9,7 +9,7 @@ public class JavaClassTest {
 
     @Test
     public void shouldHasTestMethods() {
-        JavaClass testClass = new JavaClass(false, "TestClass", "BaseTestClass");
+        JavaClass testClass = new JavaClass(false, "pkg","TestClass", "BaseTestClass");
         testClass.addTestMethod(new TestMethod("shouldBeATestMethod", "ignore src"));
 
         assertTrue(testClass.hasTestMethods());
@@ -17,7 +17,7 @@ public class JavaClassTest {
 
     @Test
     public void shouldHasNoTestMethods() {
-        JavaClass testClass = new JavaClass(false, "TestClass", "BaseTestClass");
+        JavaClass testClass = new JavaClass(false, "pkg","TestClass", "BaseTestClass");
 
         assertFalse(testClass.hasTestMethods());
     }

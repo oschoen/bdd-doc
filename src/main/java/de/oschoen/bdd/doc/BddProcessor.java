@@ -7,17 +7,18 @@ import de.oschoen.bdd.doc.report.BddReport;
 import de.oschoen.bdd.doc.report.ScenarioReporter;
 import de.oschoen.bdd.doc.report.TestObjectReporter;
 
-import javax.annotation.processing.*;
+import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.RoundEnvironment;
+import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import java.io.File;
 import java.util.List;
 import java.util.Set;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 @SupportedAnnotationTypes("*")
-@SupportedOptions(BddProcessor.REPORT_OUT_DIR_OPTION_NAME)
 public class BddProcessor extends AbstractProcessor {
 
     private ClassHierarchy classHierarchy = new ClassHierarchy();
@@ -27,9 +28,8 @@ public class BddProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations,
                            RoundEnvironment roundEnvironment) {
 
-        String reportOutputDir = processingEnv.getOptions().get(REPORT_OUT_DIR_OPTION_NAME);
 
-        if (reportOutputDir != null) {
+        if (!roundEnvironment.processingOver()) {
             Trees trees = Trees.instance(processingEnv);
             TreePathScanner<Void, Void> bddTreePathScanner = new BddTreePathScanner(trees, classHierarchy);
 
@@ -40,10 +40,10 @@ public class BddProcessor extends AbstractProcessor {
 
             List<TestObject> testObjects = TestObject.getAllTestObjects(classHierarchy);
 
-            new BddReport(new File(processingEnv.getOptions().get(REPORT_OUT_DIR_OPTION_NAME)), new TestObjectReporter(new ScenarioReporter())).writeReports(testObjects);
-
+            new BddReport(processingEnv.getFiler(), new TestObjectReporter(new ScenarioReporter())).writeReports(testObjects);
         }
-        return true;
+
+        return false;
     }
 
 

@@ -13,6 +13,7 @@ import java.util.List;
 
 public class BddTreePathScanner extends TreePathScanner<Void, Void> {
 
+    private String currentPackageName;
     private JavaClass currentClass;
     private TestMethod currentTestMethod;
     private final Trees trees;
@@ -22,6 +23,8 @@ public class BddTreePathScanner extends TreePathScanner<Void, Void> {
         this.trees = trees;
         this.classHierarchy = classHierarchy;
     }
+
+    
 
     @Override
     public Void visitClass(ClassTree node, Void aVoid) {
@@ -34,12 +37,12 @@ public class BddTreePathScanner extends TreePathScanner<Void, Void> {
 
         if (e != null) {
             boolean isAbstract = node.getModifiers().getFlags().contains(Modifier.ABSTRACT);
-            String name = e.getQualifiedName().toString();
+            String simpleName = e.getSimpleName().toString();
             String extendsFrom = null;
             if (node.getExtendsClause() != null) {
                 extendsFrom = e.getSuperclass().toString();
             }
-            currentClass = new JavaClass(isAbstract, name, extendsFrom);
+            currentClass = new JavaClass(isAbstract, path.getCompilationUnit().getPackageName().toString(), simpleName, extendsFrom);
             classHierarchy.addClass(currentClass);
             return super.visitClass(node, aVoid);
         } else {

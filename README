@@ -16,7 +16,7 @@ public void shouldShowsOneRegistrationAs1%() {
 
 Then compile this source code with the annotation processor and you get a readable HTML documentation:
 
-javac -cp bdd-doc-1.0-SNAPSHOT-all-dep.jar -Areportoutdir=html/doc/output/directory YourTestClass.java
+javac -cp bdd-doc-1.0-SNAPSHOT-all-dep.jar -s html/doc/output/directory YourTestClass.java
 
 Example output:
 

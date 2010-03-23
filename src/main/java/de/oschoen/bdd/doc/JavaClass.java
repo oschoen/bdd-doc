@@ -6,13 +6,16 @@ import java.util.*;
 public class JavaClass {
 
     private final boolean abstractClass;
-    private final String name;    
+
+    private final String packageName;
+    private final String simpleName;
     private final String extendsFrom;
     private final List<TestMethod> testMethods = new ArrayList<TestMethod>();
 
-    public JavaClass(boolean abstractClass, String name, String extendsFrom) {
+    public JavaClass(boolean abstractClass, String packageName, String simpleName, String extendsFrom) {
         this.abstractClass = abstractClass;
-        this.name = name;
+        this.packageName = packageName;
+        this.simpleName = simpleName;
         this.extendsFrom = extendsFrom;
     }
 
@@ -20,8 +23,17 @@ public class JavaClass {
         return !abstractClass;
     }
 
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public String getSimpleName() {
+        return simpleName;
+    }
+    
     public String getName() {
-        return name;
+        return packageName + "." + simpleName;
     }
 
     public String getExtendsFrom() {
@@ -49,7 +61,7 @@ public class JavaClass {
 
         if (abstractClass != javaClass.abstractClass) return false;
         if (!extendsFrom.equals(javaClass.extendsFrom)) return false;
-        if (!name.equals(javaClass.name)) return false;
+        if (!getName().equals(javaClass.getName())) return false;
         return testMethods.equals(javaClass.testMethods);
 
         }
@@ -57,7 +69,7 @@ public class JavaClass {
     @Override
     public int hashCode() {
         int result = (abstractClass ? 1 : 0);
-        result = 31 * result + name.hashCode();
+        result = 31 * result + getName().hashCode();
         result = 31 * result + extendsFrom.hashCode();
         result = 31 * result + testMethods.hashCode();
         return result;
